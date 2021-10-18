@@ -5,7 +5,7 @@ const fetchWeather = createAsyncThunk(
 		async function (pos, {rejectWithValue}) {
 			const [lat, lon] = pos
 			// const url = `http://api.weatherapi.com/v1/forecast.json?key=b8d348df879e486ca0f172620210610&q=48.86,2.35&days=8`
-			const url = `http://api.weatherapi.com/v1/forecast.json?key=b8d348df879e486ca0f172620210610&q=${lat},${lon}&days=8&lang=ru`
+			const url = `https://api.weatherapi.com/v1/forecast.json?key=b8d348df879e486ca0f172620210610&q=${lat},${lon}&days=8&lang=ru`
 			try {
 				const response = await fetch(url)
 				if (!response.ok) {
@@ -21,7 +21,7 @@ const fetchWeather = createAsyncThunk(
 const fetchLocation = createAsyncThunk(
 		'data/fetchLocation',
 		async function (word, {rejectWithValue}) {
-			const url = `http://api.weatherapi.com/v1/search.json?key=b8d348df879e486ca0f172620210610&q=${word}`
+			const url = `https://api.weatherapi.com/v1/search.json?key=b8d348df879e486ca0f172620210610&q=${word}`
 			try {
 				const response = await fetch(url)
 				if (!response.ok) {
