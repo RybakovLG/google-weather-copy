@@ -1,38 +1,92 @@
+* {
+    outline: 1px lightgrey solid;
+    box-sizing: border-box;
+}
+
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+button {
+    border: none;
+    background: none;
+    transition: all 100ms;
+    padding: 0;
+}
+
+button:hover:not(.active) {
+    background-color: #f8f9fa;
+}
+
+button:active {
+    transform: scale(.9);
+}
+
 .App {
-  text-align: center;
+    font-family: "Arial" ,sans-serif;
+    font-weight: 400;
+    padding: 1rem;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #202124;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.container {
+    width: 650px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.charts {
+    overflow: hidden;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.vert-line {
+    display: inline-block;
+    width: 1px;
+    color: transparent;
+    border-left: 1px solid #ebebeb;
+    margin: 0 11px;
 }
 
-.App-link {
-  color: #61dafb;
+.type-btns button {
+    font-size: 14px;
+    line-height: 1.58;
+    border-bottom: 3px solid transparent;
+    padding-bottom: 4px;
+    cursor: pointer;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.type-btns button.active {
+    border-bottom-color: #fbbc04;
+    cursor: default;
+}
+
+.day-btns {
+    margin-top: 10px;
+    display: flex;
+    gap: 1px;
+    justify-content: center;
+}
+
+.day-btn span {
+    font-size: 13px;
+    font-weight: normal;
+    line-height: 15px;
+}
+
+.day-btn {
+    padding: 5px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.day-btn.active {
+    background-color: #f8f9fa;
+}
+
+.day-btn__f {
+    color: #70757a;
 }
