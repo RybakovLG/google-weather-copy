@@ -1,18 +1,7 @@
 import React, {useEffect} from 'react';
-import {
-	VictoryArea,
-	VictoryAxis,
-	VictoryChart,
-	VictoryContainer,
-	VictoryLabel,
-	VictoryScatter} from "victory";
+import {VictoryArea, VictoryAxis, VictoryChart, VictoryContainer, VictoryLabel, VictoryScatter} from "victory";
 import {useDispatch, useSelector} from "react-redux";
-import {
-	getArrHours,
-	getXY,
-	setCurrUpdTime,
-	setSlideGraphics,
-	setType} from "../../store/graphSlice";
+import {getArrHours, getXY, setCurrUpdTime, setSlideGraphics, setType} from "../../store/graphSlice";
 import WindArrow from "./WindArrow";
 import LabelAxis from "./LabelAxis";
 import useGraphics from "../../hooks/useGraphics";
@@ -43,13 +32,19 @@ const WeatherGraphic = () => {
 		}
 	}, [isMetric])
 
+	function getMinY() {
+		return dataXY.reduce((min, cur) => {
+			if (min >= cur[typeY]) min = (cur[typeY] - 1)
+			return min
+		}, -1)
+	}
+
 	return (
 			<VictoryChart
-					minDomain={{x: dataXY.length ? dataXY[0].time : undefined}}
 					width={1925}
 					height={125}
 					padding={{bottom: 20, top: 25, left: 0, right: 0}}
-					domainPadding={{y: [0, 25]}}
+					domainPadding={{y: [15, 25]}}
 					containerComponent={
 						<VictoryContainer
 								style={{
@@ -72,8 +67,11 @@ const WeatherGraphic = () => {
 								data={dataXY}
 								x='time'
 								style={{
-									labels: {fontFamily: '"Arial", sans-serif',
-										fontSize: 12, stroke: undefined}}}
+									labels: {
+										fontFamily: '"Arial", sans-serif',
+										fontSize: 12, stroke: undefined
+									}
+								}}
 								labels={({datum}) => getVisualY(datum)}
 								dataComponent={<WindArrow dx={15}/>}
 								labelComponent={
@@ -81,6 +79,7 @@ const WeatherGraphic = () => {
 						/>
 						: <VictoryArea
 								name='chart'
+								y0={getMinY}
 								interpolation={typeY === 'humidity' ? 'step' : 'basis'}
 								style={chartsStyles.VictoryArea}
 								data={dataXY}
@@ -91,6 +90,7 @@ const WeatherGraphic = () => {
 									<LabelComponent
 											y={typeY.includes('temp') ? undefined : 45}
 											dx={typeY.includes('temp') ? 8 : 2}
+											dy={-10}
 									/>
 								}
 						/>
@@ -98,5 +98,6 @@ const WeatherGraphic = () => {
 			</VictoryChart>
 	);
 };
+
 
 export default WeatherGraphic;
