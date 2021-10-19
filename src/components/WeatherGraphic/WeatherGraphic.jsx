@@ -1,7 +1,7 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {VictoryArea, VictoryAxis, VictoryChart, VictoryContainer, VictoryLabel, VictoryScatter} from "victory";
 import {useDispatch, useSelector} from "react-redux";
-import {getArrHours, getXY, setCurrUpdTime, setSlideGraphics, setType} from "../../store/graphSlice";
+import {getArrHours, getMinY, getXY, setCurrUpdTime, setSlideGraphics, setType} from "../../store/graphSlice";
 import WindArrow from "./WindArrow";
 import LabelAxis from "./LabelAxis";
 import useGraphics from "../../hooks/useGraphics";
@@ -10,7 +10,7 @@ import LabelComponent from "./LabelComponent";
 const WeatherGraphic = () => {
 
 	const {data} = useSelector(state => state.data)
-	const {dataXY, slideGraphicsPx, typeY, tickValues} =
+	const {dataXY, slideGraphicsPx, typeY, tickValues, minY} =
 			useSelector(state => state.graphics)
 	const {isMetric} = useSelector(state => state.currWeather)
 	const dispatch = useDispatch()
@@ -32,12 +32,9 @@ const WeatherGraphic = () => {
 		}
 	}, [isMetric])
 
-	function getMinY() {
-		return dataXY.reduce((min, cur) => {
-			if (min >= cur[typeY]) min = (cur[typeY] - 1)
-			return min
-		}, -1)
-	}
+	useEffect(() => {
+		dispatch(getMinY())
+	},[dataXY])
 
 	return (
 			<VictoryChart
@@ -79,7 +76,7 @@ const WeatherGraphic = () => {
 						/>
 						: <VictoryArea
 								name='chart'
-								y0={getMinY}
+								y0={() => minY}
 								interpolation={typeY === 'humidity' ? 'step' : 'basis'}
 								style={chartsStyles.VictoryArea}
 								data={dataXY}

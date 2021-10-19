@@ -5,7 +5,8 @@ const defStates = {
 	typeY: 'temp_c',
 	tickValues: [],
 	last_updated: null,
-	slideGraphicsPx: null
+	slideGraphicsPx: null,
+	minY: -1,
 }
 
 const graphSlice = createSlice({
@@ -61,13 +62,19 @@ const graphSlice = createSlice({
 				let lastUpdTime = new Date(state.last_updated).getTime()
 				if (currTime < lastUpdTime) currTime = lastUpdTime
 				const firstTime = state.dataXY[0].time
-				let res = (((currTime - firstTime) / 3600000) - 2.9) * 650/24
+				let res = (((currTime - firstTime) / 3600000) - 2.9) * 650 / 24
 				if (res > 1275) res = 1275
 				if (res < 0) res = 0
 
 				state.slideGraphicsPx = res
 			}
-		}
+		},
+		getMinY(state, action) {
+			state.minY = state.dataXY.reduce((min, cur) => {
+				if (min >= cur[state.typeY]) min = (cur[state.typeY] - 1)
+				return min
+			}, -1)
+		},
 	}
 })
 
@@ -78,6 +85,8 @@ export const {
 	getArrHours,
 	getVisualY,
 	setCurrUpdTime,
-	setType} = graphSlice.actions
+	setType,
+	getMinY
+} = graphSlice.actions
 
 export default graphSlice.reducer
