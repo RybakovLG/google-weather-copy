@@ -10,11 +10,14 @@ const TypeBtns = () => {
 	const dispatch = useDispatch()
 
 	function handleClick(type, e) {
-		e.target.parentElement.querySelectorAll('button')
-				.forEach(b => b.className = '')
-		e.target.classList.add('active')
 		if (typeY === type) return
-		if ((typeY.includes('temp')) && type === 'temp') return
+		if (typeY.includes(`${type}`)) return
+		console.log('handleClick')
+
+		e.target.parentElement.querySelectorAll('button')
+				.forEach(button => button.className = '')
+		e.target.classList.add('active')
+
 		if (type === 'temp') {
 			dispatch(setType(`${isMetric ? 'temp_c' : 'temp_f'}`))
 			return
@@ -23,6 +26,7 @@ const TypeBtns = () => {
 			dispatch(setType(`${isMetric ? 'wind_kph' : 'wind_mph'}`))
 			return
 		}
+
 		dispatch(setType(type))
 	}
 

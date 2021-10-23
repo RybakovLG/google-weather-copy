@@ -7,7 +7,7 @@ import CurrentWeather from "./components/CurrentWeather/CurrentWeather";
 import TypeBtns from "./components/TypeBtns/TypeBtns";
 import WeatherGraphic from "./components/WeatherGraphic/WeatherGraphic";
 import DaysBtns from "./components/DaysBtns/DaysBtns";
-import {setGeo} from "./store/currWeatherSlice";
+import {setAutoGeolocation} from "./store/currWeatherSlice";
 
 function App() {
 	const {error, statusFetchWeather} = useSelector(state => state.data)
@@ -17,7 +17,7 @@ function App() {
 		navigator.geolocation.getCurrentPosition(
 				(pos) => {
 					dispatch(fetchWeather([pos.coords.latitude, pos.coords.longitude]))
-					dispatch(setGeo(true))
+					dispatch(setAutoGeolocation(true))
 				},
 				(err) =>
 						dispatch(fetchWeather([34.052235, -118.243683])), //Los angeles

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const LocIcon = ({size = 24, fill = '#fbbc04'}) => {
+const AutoLocationIcon = ({size = 24, fill = '#fbbc04'}) => {
 
 	return (
 			<svg
@@ -15,6 +15,6 @@ const LocIcon = ({size = 24, fill = '#fbbc04'}) => {
 	);
 };
 
-export default LocIcon;
+export default AutoLocationIcon;
 
 

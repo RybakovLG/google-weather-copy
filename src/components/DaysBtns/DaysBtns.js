@@ -10,7 +10,9 @@ const DaysBtns = () => {
 
 	const dispatch = useDispatch()
 
-	function handlerClick(e, currDay) {
+	function handlerClick(e, btnDay, isSameDay) {
+		if (isSameDay) return
+
 		const btn = e.target.closest('button')
 
 		if (!btn.classList.contains('active')) {
@@ -18,8 +20,9 @@ const DaysBtns = () => {
 					.forEach(b => b.classList.remove('active'))
 			btn.classList.add('active')
 		}
-		dispatch(setSlideGraphics(currDay.date))
-		dispatch(setCurrDayData([currDay.date, currDay.day, data]))
+
+		dispatch(setSlideGraphics(btnDay.date))
+		dispatch(setCurrDayData([btnDay.date, btnDay.day, data]))
 	}
 
 	function roundNums(...nums) {
@@ -31,12 +34,13 @@ const DaysBtns = () => {
 		const {icon, text} = btn.day.condition
 		const currDay = new Date(currData.updTimeStamp).getDate()
 		const btnDay = new Date(btn.date).getDate();
+		const isSameDay = currDay === btnDay;
 
 		[maxtemp_c, maxtemp_f, mintemp_c, mintemp_f] = roundNums(maxtemp_c, maxtemp_f, mintemp_c, mintemp_f)
 
 		return (
 				<button
-						onClick={e => handlerClick(e, btn)}
+						onClick={e => handlerClick(e, btn, isSameDay)}
 						className={`day-btn ${currDay === btnDay ? 'active' : ''}`}
 						key={btn.date}
 				>

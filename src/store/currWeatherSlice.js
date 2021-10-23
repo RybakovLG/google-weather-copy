@@ -4,8 +4,8 @@ const currWeatherSlice = createSlice({
 			name: 'currWeather',
 			initialState: {
 				isMetric: true,
-				isVisFindLoc: false,
-				isGeo: false,
+				isVisibleFindLocationInput: false,
+				isAutoGeolocation: false,
 				currData: {},
 			},
 			reducers: {
@@ -15,12 +15,12 @@ const currWeatherSlice = createSlice({
 					state.currData = getDataObj(data, curr, curr.last_updated)
 				},
 
-				toggVisFindLoc(state, action) {
+				setVisionFindLocationInput(state, action) {
 					if (typeof action.payload === "boolean") {
-						state.isVisFindLoc = action.payload
+						state.isVisibleFindLocationInput = action.payload
 						return
 					}
-					state.isVisFindLoc = !state.isVisFindLoc
+					state.isVisibleFindLocationInput = !state.isVisFindLoc
 				},
 
 				setForecastData(state, action) {
@@ -46,8 +46,8 @@ const currWeatherSlice = createSlice({
 					state.isMetric = action.payload
 				},
 
-				setGeo(state, action) {
-					state.isGeo = action.payload
+				setAutoGeolocation(state, action) {
+					state.isAutoGeolocation = action.payload
 				},
 
 			}
@@ -80,8 +80,8 @@ function getDataObj(data, curr, last_updated, isDay = false) {
 }
 
 export const {
-	setGeo,
-	toggVisFindLoc,
+	setAutoGeolocation,
+	setVisionFindLocationInput,
 	setCurrData,
 	setForecastData,
 	setMetric,

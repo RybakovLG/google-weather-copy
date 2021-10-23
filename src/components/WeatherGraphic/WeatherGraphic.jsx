@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {VictoryArea, VictoryAxis, VictoryChart, VictoryContainer, VictoryLabel, VictoryScatter} from "victory";
 import {useDispatch, useSelector} from "react-redux";
 import {getArrHours, getMinY, getXY, setCurrUpdTime, setSlideGraphics, setType} from "../../store/graphSlice";
@@ -34,7 +34,7 @@ const WeatherGraphic = () => {
 
 	useEffect(() => {
 		dispatch(getMinY())
-	},[dataXY])
+	}, [dataXY])
 
 	return (
 			<VictoryChart
