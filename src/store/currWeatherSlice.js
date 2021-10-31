@@ -3,24 +3,16 @@ import {createSlice} from "@reduxjs/toolkit";
 const currWeatherSlice = createSlice({
 			name: 'currWeather',
 			initialState: {
-				isMetric: true,
-				isVisibleFindLocationInput: false,
-				isAutoGeolocation: false,
 				currData: {},
+				isMetric: true,
+				isAutoLocation: false,
 			},
+
 			reducers: {
 				setCurrData(state, action) {
 					const {data} = action.payload
 					const curr = data.current;
-					state.currData = getDataObj(data, curr, curr.last_updated)
-				},
-
-				setVisionFindLocationInput(state, action) {
-					if (typeof action.payload === "boolean") {
-						state.isVisibleFindLocationInput = action.payload
-						return
-					}
-					state.isVisibleFindLocationInput = !state.isVisFindLoc
+					state.currData = getCurrWeatherObject(data, curr, curr.last_updated)
 				},
 
 				setForecastData(state, action) {
@@ -33,28 +25,27 @@ const currWeatherSlice = createSlice({
 							fCast = ar1;
 						}
 					}));
-					state.currData = getDataObj(data, fCast, fCast.time)
+					state.currData = getCurrWeatherObject(data, fCast, fCast.time)
 				},
 
 				setCurrDayData(state, action) {
 					const [time, currDay, data] = action.payload
 					if (state.currData.updTimeStamp === time) return
-					state.currData = getDataObj(data, currDay, time, true)
+					state.currData = getCurrWeatherObject(data, currDay, time, true)
 				},
 
 				setMetric(state, action) {
 					state.isMetric = action.payload
 				},
 
-				setAutoGeolocation(state, action) {
-					state.isAutoGeolocation = action.payload
+				setAutoLocation(state, action) {
+					state.isAutoLocation = action.payload
 				},
-
 			}
 		}
 )
 
-function getDataObj(data, curr, last_updated, isDay = false) {
+function getCurrWeatherObject(data, curr, last_updated, isDay = false) {
 
 	const formatOptions = {
 		weekday: 'long',
@@ -80,11 +71,11 @@ function getDataObj(data, curr, last_updated, isDay = false) {
 }
 
 export const {
-	setAutoGeolocation,
-	setVisionFindLocationInput,
 	setCurrData,
 	setForecastData,
 	setMetric,
-	setCurrDayData
+	setCurrDayData,
+	setAutoLocation,
 } = currWeatherSlice.actions
+
 export default currWeatherSlice.reducer

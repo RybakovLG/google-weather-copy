@@ -1,46 +1,55 @@
-import {fetchLocation, fetchWeather} from "../store/dataSlice";
-import {setAutoGeolocation, setVisionFindLocationInput} from "../store/currWeatherSlice";
+import {fetchWeather} from "../store/dataSlice";
 import {useDispatch} from "react-redux";
+import {setAutoLocation} from "../store/currWeatherSlice";
 
-const UseFindLocation = () => {
+const useFindLocation = () => {
 
 	const dispatch = useDispatch()
 
-	function onChangeInputFindLocation(word) {
-		if (word.length > 2) dispatch(fetchLocation(word))
+	function getUrPosition() {
+		navigator.geolocation.getCurrentPosition(
+				pos => {
+					dispatch(fetchWeather([pos.coords.latitude, pos.coords.longitude]))
+					dispatch(setAutoLocation(true))
+				},
+				err =>
+						dispatch(fetchWeather([34.052235, -118.243683])), //Los angeles
+				{
+					enableHighAccuracy: true,
+					timeout: 5000,
+					maximumAge: 0
+				});
 	}
 
-	function hideFindLocationEvent(ev) {
-		if (ev.target.closest('.js-findWrapper')) return
-		hideFindLocationInput()
-	}
+	async function fetchLocation(word, SetStatus, SetList, SetError) {
+		SetStatus('loading')
 
-	function hideFindLocationInput() {
-		dispatch(setVisionFindLocationInput(false))
-		document.removeEventListener('click', hideFindLocationEvent)
+		const url = `https://api.weatherapi.com/v1/search.json?key=b8d348df879e486ca0f172620210610&q=${word}`
+
+		try {
+			const response = await fetch(url)
+			if (!response.ok) {
+				throw new Error('Server Error!')
+			}
+			SetList(await response.json())
+			SetStatus('ok')
+		} catch (e) {
+			SetError(e.message)
+			SetStatus('error')
+		}
 	}
 
 	function fetchNewWeather(ev, lat, lon) {
 		dispatch(fetchWeather([lat, lon]))
 		ev.target.value = ''
-		hideFindLocationInput()
-		dispatch(setAutoGeolocation(false))
+		dispatch(setAutoLocation(false))
 	}
 
-	function showFindLocationsInput() {
-		dispatch(setVisionFindLocationInput(true))
-		setTimeout(() => {
-			document.addEventListener('click', hideFindLocationEvent)
-		})
-	}
-
-	return	{
+	return {
+		getUrPosition,
 		fetchNewWeather,
-		hideFindLocationEvent,
-		onChangeInputFindLocation,
-		showFindLocationsInput,
-		hideFindLocationInput
-		}
+		fetchLocation,
+	}
 }
 
-export default UseFindLocation;
+export default useFindLocation;

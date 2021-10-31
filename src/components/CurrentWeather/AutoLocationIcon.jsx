@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo} from 'react';
 
 const AutoLocationIcon = ({size = 24, fill = '#fbbc04'}) => {
 
@@ -15,6 +15,6 @@ const AutoLocationIcon = ({size = 24, fill = '#fbbc04'}) => {
 	);
 };
 
-export default AutoLocationIcon;
+export default memo(AutoLocationIcon);
 
 

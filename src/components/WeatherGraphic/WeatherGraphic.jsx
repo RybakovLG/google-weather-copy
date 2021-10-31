@@ -1,11 +1,12 @@
 import React, {useEffect} from 'react';
-import {VictoryArea, VictoryAxis, VictoryChart, VictoryContainer, VictoryLabel, VictoryScatter} from "victory";
 import {useDispatch, useSelector} from "react-redux";
+import {VictoryArea, VictoryAxis, VictoryChart, VictoryContainer, VictoryLabel, VictoryScatter} from "victory";
 import {getArrHours, getMinY, getXY, setCurrUpdTime, setSlideGraphics, setType} from "../../store/graphSlice";
-import WindArrow from "./WindArrow";
-import LabelAxis from "./LabelAxis";
+
 import useGraphics from "../../hooks/useGraphics";
 import LabelComponent from "./LabelComponent";
+import LabelAxis from "./LabelAxis";
+import WindArrow from "./WindArrow";
 
 const WeatherGraphic = () => {
 
@@ -13,6 +14,7 @@ const WeatherGraphic = () => {
 	const {dataXY, slideGraphicsPx, typeY, tickValues, minY} =
 			useSelector(state => state.graphics)
 	const {isMetric} = useSelector(state => state.currWeather)
+
 	const dispatch = useDispatch()
 	const {getVisualY, chartsStyles} = useGraphics()
 
@@ -65,7 +67,7 @@ const WeatherGraphic = () => {
 								x='time'
 								style={{
 									labels: {
-										fontFamily: '"Arial", sans-serif',
+										fontFamily: 'Arial, sans-serif',
 										fontSize: 12, stroke: undefined
 									}
 								}}
@@ -95,6 +97,5 @@ const WeatherGraphic = () => {
 			</VictoryChart>
 	);
 };
-
 
 export default WeatherGraphic;

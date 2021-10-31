@@ -1,23 +1,26 @@
-import React, {useEffect} from 'react';
-import classes from './CurrentWeather.module.css'
+import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {setCurrData, setMetric} from "../../store/currWeatherSlice";
+import classes from './CurrentWeather.module.css'
+
 import AutoLocationIcon from "./AutoLocationIcon";
-import UseFindLocation from "../../hooks/useFindLocation";
+import FindLocation from "./FindLocation";
+import PortalModal from "../PortalModal/PortalModal";
+
+import {setCurrData, setMetric} from "../../store/currWeatherSlice";
 
 const CurrentWeather = () => {
 
-	const {isAutoGeolocation, isVisibleFindLocationInput, isMetric, currData}
+	const {isMetric, currData, isAutoLocation}
 			= useSelector(state => state.currWeather)
-	const {temp_c, temp_f, icon, precip_mm, humidity, wind_kph,
-		wind_mph, country, name, text, updTime}
-			= currData
 
-	const {data, listFindLocations, error, statusFetchLocation}
-			= useSelector(state => state.data)
+	const {data} = useSelector(state => state.data)
 
-	const {fetchNewWeather,	onChangeInputFindLocation,showFindLocationsInput,}
-			= UseFindLocation()
+	const [isVisibleFindLocationInput, setVisibleFindLocationInput] = useState(false)
+
+	const {
+		temp_c, temp_f, icon, precip_mm, humidity, wind_kph,
+		wind_mph, country, name, text, updTime
+	} = currData
 
 	const dispatch = useDispatch()
 
@@ -27,6 +30,7 @@ const CurrentWeather = () => {
 
 	return (
 			<div className={classes.current}>
+
 				<div className={classes.leftCol}>
 					<img width={64} height={64} src={icon} alt="weather icon"/>
 					<span className={classes.temp}>{isMetric ? temp_c : temp_f}</span>
@@ -51,42 +55,30 @@ const CurrentWeather = () => {
 						<li>Ветер: {isMetric ? `${wind_kph} км/ч` : `${wind_mph} ми/ч`}</li>
 					</ul>
 				</div>
+
 				<div className={classes.rightCol}>
-					{isVisibleFindLocationInput && !error
-							? <div className={`${classes.findWrapper} js-findWrapper`}>
-								<input className={classes.findInput}
-											 onChange={ev => onChangeInputFindLocation(ev.target.value)}
-											 placeholder={'Город (от 3 символов) ...'}
-											 type="text"
-											 name="country-name"
-								/>
-								<ul className={classes.findList}>
-									{listFindLocations.length > 0 && statusFetchLocation === 'ok' &&
-									listFindLocations.map(location => {
-										return (
-												<li className={classes.findItem}
-														onClick={(ev) => fetchNewWeather(ev, location.lat, location.lon)}
-														key={location.id}>
-													{location.name}
-												</li>
-										)
-									})}
-									{listFindLocations.length === 0 && statusFetchLocation === 'ok' &&
-									<li className={classes.findItem}>Не найдено</li>}
-								</ul>
-							</div>
-							: <button
-									onClick={showFindLocationsInput}
-									className={classes.btnFindLoc}>
-								{isAutoGeolocation && <AutoLocationIcon size={20}/>}
-								<h1 className={classes.location}>{country}, {name}</h1>
-							</button>
-					}
+					<button
+							onClick={() => setVisibleFindLocationInput(true)}
+							className={classes.btnFindLoc}>
+						{isAutoLocation && <AutoLocationIcon size={20}/>}
+						<h1 className={classes.location}>{country}, {name}</h1>
+					</button>
 					<span>{updTime}</span>
 					<span>{text}</span>
+
+					<PortalModal
+							childrenClassName={'js-findWrapper'}
+							isOpen={isVisibleFindLocationInput}
+							onClose={() => setVisibleFindLocationInput(false)}
+					>
+						<FindLocation
+								isVisible={isVisibleFindLocationInput}
+						/>
+					</PortalModal>
 				</div>
 			</div>
 	);
 };
+
 
 export default CurrentWeather;

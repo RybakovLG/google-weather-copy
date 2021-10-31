@@ -1,12 +1,11 @@
-import React from 'react';
+import React, {memo} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {setCurrDayData} from "../../store/currWeatherSlice";
 import {setSlideGraphics} from "../../store/graphSlice";
 
-const DaysBtns = () => {
+const DaysBtns = ({currData, isMetric}) => {
 
 	const {data} = useSelector(state => state.data)
-	const {currData, isMetric} = useSelector(state => state.currWeather)
 
 	const dispatch = useDispatch()
 
@@ -15,18 +14,12 @@ const DaysBtns = () => {
 
 		const btn = e.target.closest('button')
 
-		if (!btn.classList.contains('active')) {
-			btn.parentElement.querySelectorAll('button')
-					.forEach(b => b.classList.remove('active'))
-			btn.classList.add('active')
-		}
+		btn.parentElement.querySelectorAll('button')
+				.forEach(b => b.classList.remove('active'))
+		btn.classList.add('active')
 
 		dispatch(setSlideGraphics(btnDay.date))
 		dispatch(setCurrDayData([btnDay.date, btnDay.day, data]))
-	}
-
-	function roundNums(...nums) {
-		return (nums.map(num => Math.round(num)))
 	}
 
 	function addBtns(btn) {
@@ -36,12 +29,17 @@ const DaysBtns = () => {
 		const btnDay = new Date(btn.date).getDate();
 		const isSameDay = currDay === btnDay;
 
-		[maxtemp_c, maxtemp_f, mintemp_c, mintemp_f] = roundNums(maxtemp_c, maxtemp_f, mintemp_c, mintemp_f)
+		function roundNums(...nums) {
+			return (nums.map(num => Math.round(num)))
+		}
+
+		[maxtemp_c, maxtemp_f, mintemp_c, mintemp_f]
+				= roundNums(maxtemp_c, maxtemp_f, mintemp_c, mintemp_f)
 
 		return (
 				<button
 						onClick={e => handlerClick(e, btn, isSameDay)}
-						className={`day-btn ${currDay === btnDay ? 'active' : ''}`}
+						className={`day-btn ${isSameDay ? 'active' : ''}`}
 						key={btn.date}
 				>
 					<div> {
@@ -67,4 +65,9 @@ const DaysBtns = () => {
 	);
 };
 
-export default DaysBtns;
+function areEqual(prevProps, currProps) {
+	const sameDay = new Date(prevProps.currData.updTimeStamp).getDay() === new Date(currProps.currData.updTimeStamp).getDay()
+	return (prevProps.isMetric === currProps.isMetric && sameDay)
+}
+
+export default memo(DaysBtns, areEqual);
