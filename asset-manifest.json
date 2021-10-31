@@ -1,23 +1,23 @@
 {
   "files": {
-    "main.css": "//rybakovlg.github.io/google-weather-copy/static/css/main.75b5e92e.chunk.css",
-    "main.js": "//rybakovlg.github.io/google-weather-copy/static/js/main.972a25e6.chunk.js",
-    "main.js.map": "//rybakovlg.github.io/google-weather-copy/static/js/main.972a25e6.chunk.js.map",
+    "main.css": "//rybakovlg.github.io/google-weather-copy/static/css/main.b541fc2f.chunk.css",
+    "main.js": "//rybakovlg.github.io/google-weather-copy/static/js/main.c2e1d439.chunk.js",
+    "main.js.map": "//rybakovlg.github.io/google-weather-copy/static/js/main.c2e1d439.chunk.js.map",
     "runtime-main.js": "//rybakovlg.github.io/google-weather-copy/static/js/runtime-main.f03855c7.js",
     "runtime-main.js.map": "//rybakovlg.github.io/google-weather-copy/static/js/runtime-main.f03855c7.js.map",
     "static/css/2.679831fc.chunk.css": "//rybakovlg.github.io/google-weather-copy/static/css/2.679831fc.chunk.css",
-    "static/js/2.f82b1157.chunk.js": "//rybakovlg.github.io/google-weather-copy/static/js/2.f82b1157.chunk.js",
-    "static/js/2.f82b1157.chunk.js.map": "//rybakovlg.github.io/google-weather-copy/static/js/2.f82b1157.chunk.js.map",
+    "static/js/2.79c44374.chunk.js": "//rybakovlg.github.io/google-weather-copy/static/js/2.79c44374.chunk.js",
+    "static/js/2.79c44374.chunk.js.map": "//rybakovlg.github.io/google-weather-copy/static/js/2.79c44374.chunk.js.map",
     "index.html": "//rybakovlg.github.io/google-weather-copy/index.html",
     "static/css/2.679831fc.chunk.css.map": "//rybakovlg.github.io/google-weather-copy/static/css/2.679831fc.chunk.css.map",
-    "static/css/main.75b5e92e.chunk.css.map": "//rybakovlg.github.io/google-weather-copy/static/css/main.75b5e92e.chunk.css.map",
-    "static/js/2.f82b1157.chunk.js.LICENSE.txt": "//rybakovlg.github.io/google-weather-copy/static/js/2.f82b1157.chunk.js.LICENSE.txt"
+    "static/css/main.b541fc2f.chunk.css.map": "//rybakovlg.github.io/google-weather-copy/static/css/main.b541fc2f.chunk.css.map",
+    "static/js/2.79c44374.chunk.js.LICENSE.txt": "//rybakovlg.github.io/google-weather-copy/static/js/2.79c44374.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.f03855c7.js",
     "static/css/2.679831fc.chunk.css",
-    "static/js/2.f82b1157.chunk.js",
-    "static/css/main.75b5e92e.chunk.css",
-    "static/js/main.972a25e6.chunk.js"
+    "static/js/2.79c44374.chunk.js",
+    "static/css/main.b541fc2f.chunk.css",
+    "static/js/main.c2e1d439.chunk.js"
   ]
 }
