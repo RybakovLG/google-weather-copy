@@ -3,9 +3,10 @@ import {useDispatch, useSelector} from "react-redux";
 import {setCurrDayData} from "../../store/currWeatherSlice";
 import {setSlideGraphics} from "../../store/graphSlice";
 
-const DaysBtns = ({currData, isMetric}) => {
+const DaysBtns = () => {
 
 	const {data} = useSelector(state => state.data)
+	const {currData, isMetric} = useSelector(state => state.currWeather)
 
 	const dispatch = useDispatch()
 
@@ -19,7 +20,7 @@ const DaysBtns = ({currData, isMetric}) => {
 		btn.classList.add('active')
 
 		dispatch(setSlideGraphics(btnDay.date))
-		dispatch(setCurrDayData([btnDay.date, btnDay.day, data]))
+		dispatch(setCurrDayData([btnDay.date, btnDay.day]))
 	}
 
 	function addBtns(btn) {
@@ -30,11 +31,16 @@ const DaysBtns = ({currData, isMetric}) => {
 		const isSameDay = currDay === btnDay;
 
 		function roundNums(...nums) {
-			return (nums.map(num => Math.round(num)))
+			return nums.map(num => Math.round(num))
 		}
 
 		[maxtemp_c, maxtemp_f, mintemp_c, mintemp_f]
 				= roundNums(maxtemp_c, maxtemp_f, mintemp_c, mintemp_f)
+
+		const weekDay = new Intl.DateTimeFormat(
+				'ru-RU',
+				{weekday: 'short'})
+				.format(new Date(btn.date))
 
 		return (
 				<button
@@ -42,12 +48,7 @@ const DaysBtns = ({currData, isMetric}) => {
 						className={`day-btn ${isSameDay ? 'active' : ''}`}
 						key={btn.date}
 				>
-					<div> {
-						new Intl.DateTimeFormat('ru-RU',
-								{weekday: 'short'})
-								.format(new Date(btn.date))
-					}
-					</div>
+					<div>{weekDay}</div>
 					<img width={64} height={64} src={icon} alt={text}/>
 					<br/>
 					<span>  {`${isMetric ? maxtemp_c : maxtemp_f}`}&deg; </span>
@@ -58,7 +59,8 @@ const DaysBtns = ({currData, isMetric}) => {
 
 	return (
 			<div className="day-btns">
-				{data.forecast.forecastday
+				{
+					data.forecast.forecastday
 						.map(btn => addBtns(btn))
 				}
 			</div>

@@ -1,55 +1,42 @@
 import React, {useEffect} from 'react';
-import {useDispatch, useSelector} from "react-redux";
+import {batch, useDispatch, useSelector} from "react-redux";
 import {VictoryArea, VictoryAxis, VictoryChart, VictoryContainer, VictoryLabel, VictoryScatter} from "victory";
-import {getArrHours, getMinY, getXY, setCurrUpdTime, setSlideGraphics, setType} from "../../store/graphSlice";
+import {getArrHours, getMinY, getXY, setSlideGraphics} from "../../store/graphSlice";
 
 import useGraphics from "../../hooks/useGraphics";
 import LabelComponent from "./LabelComponent";
 import LabelAxis from "./LabelAxis";
 import WindArrow from "./WindArrow";
 
-const WeatherGraphic = () => {
+const WeatherGraphic = ({data}) => {
 
-	const {data} = useSelector(state => state.data)
-	const {dataXY, slideGraphicsPx, typeY, tickValues, minY} =
+	const {dataXY, typeY, tickValues, minY} =
 			useSelector(state => state.graphics)
-	const {isMetric} = useSelector(state => state.currWeather)
 
 	const dispatch = useDispatch()
-	const {getVisualY, chartsStyles} = useGraphics()
+
+	const {getVisualY, chartsStyles, onClick} = useGraphics()
 
 	useEffect(() => {
-		dispatch(getXY({data}))
-		dispatch(setCurrUpdTime({data}))
-		dispatch(getArrHours())
-		dispatch(setSlideGraphics(data.current.last_updated))
+		batch(() => {
+					dispatch(getXY({data}))
+					dispatch(getArrHours())
+					dispatch(setSlideGraphics(data.current.last_updated))
+					dispatch(getMinY())
+				}
+		)
 	}, [data])
-
-	useEffect(() => {
-		if (typeY.includes('temp')) {
-			dispatch(setType(`${isMetric ? 'temp_c' : 'temp_f'}`))
-		}
-		if (typeY.includes('wind')) {
-			dispatch(setType(`${isMetric ? 'wind_kph' : 'wind_mph'}`))
-		}
-	}, [isMetric])
-
-	useEffect(() => {
-		dispatch(getMinY())
-	}, [dataXY])
 
 	return (
 			<VictoryChart
 					width={1925}
 					height={125}
-					padding={{bottom: 20, top: 25, left: 0, right: 0}}
-					domainPadding={{y: [15, 25]}}
+					padding={chartsStyles.padding}
+					domainPadding={chartsStyles.domainPadding}
 					containerComponent={
 						<VictoryContainer
-								style={{
-									transform: `translateX(-${slideGraphicsPx}px)`,
-									transition: 'all 1000ms cubic-bezier(.51,-0.17,0,1)'
-								}}
+								events={onClick}
+								style={chartsStyles.VictoryContainer}
 								responsive={false}/>}
 			>
 				<VictoryAxis

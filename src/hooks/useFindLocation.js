@@ -12,8 +12,7 @@ const useFindLocation = () => {
 					dispatch(fetchWeather([pos.coords.latitude, pos.coords.longitude]))
 					dispatch(setAutoLocation(true))
 				},
-				err =>
-						dispatch(fetchWeather([34.052235, -118.243683])), //Los angeles
+				() => dispatch(fetchWeather([34.052235, -118.243683])), //Los angeles
 				{
 					enableHighAccuracy: true,
 					timeout: 5000,

@@ -1,19 +1,16 @@
 import React from 'react';
-import {setForecastData} from "../../store/currWeatherSlice";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import useGraphics from "../../hooks/useGraphics";
 
 const LabelComponent = (props) => {
 	const {datum, x, dx, y, dy, style} = props;
 
-	const data = useSelector(state => state.data.data)
 	const {currData} = useSelector(state => state.currWeather)
-	const dispatch = useDispatch()
+
 	const {getVisualY} = useGraphics()
 
 	return (
 			<g
-					onClick={() => dispatch(setForecastData([datum.time, data]))}
 					style={style}
 					x={x}
 					y={getVisualY(datum)}
@@ -24,6 +21,7 @@ const LabelComponent = (props) => {
 						x={x}
 						fill={'transparent'}
 						y={y - 25}
+						data-time={datum.time}
 				/>
 				<text
 						style={{
@@ -35,7 +33,9 @@ const LabelComponent = (props) => {
 						y={y}
 						dy={dy}
 				>
-					<tspan>
+					<tspan
+							data-time={datum.time}
+					>
 						{getVisualY(datum)}
 					</tspan>
 				</text>

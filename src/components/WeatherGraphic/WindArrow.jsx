@@ -1,9 +1,10 @@
 import React from 'react';
 import {useSelector} from "react-redux";
 
-const WindArrow = ({x, y, dx, datum}) => {
+const WindArrow = ({x, dx, datum}) => {
 
 	const {tickValues} = useSelector(state => state.graphics)
+
 	let {wind_degree, wind_kph, time} = datum
 	const isVisible = tickValues.includes(time)
 

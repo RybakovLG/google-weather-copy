@@ -10,11 +10,11 @@ const TypeBtns = () => {
 	const dispatch = useDispatch()
 
 	function handleClick(type, e) {
-		if (typeY === type) return
-		if (typeY.includes(`${type}`)) return
+		if (typeY.includes(type)) return
 
 		e.target.parentElement.querySelectorAll('button')
-				.forEach(button => button.className = '')
+				.forEach(button => button.classList.remove('active'))
+
 		e.target.classList.add('active')
 
 		if (type === 'temp') {
@@ -26,6 +26,7 @@ const TypeBtns = () => {
 			return
 		}
 		dispatch(setType(type))
+
 	}
 
 	return (

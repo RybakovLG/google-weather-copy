@@ -11,8 +11,7 @@ import DaysBtns from "./components/DaysBtns/DaysBtns";
 import useFindLocation from "./hooks/useFindLocation";
 
 function App() {
-	const {errorFetchWeather, statusFetchWeather} = useSelector(state => state.data)
-	const {currData, isMetric} = useSelector(state => state.currWeather)
+	const {data ,errorFetchWeather, statusFetchWeather} = useSelector(state => state.data)
 
 	const { getUrPosition } = useFindLocation()
 
@@ -30,9 +29,9 @@ function App() {
 					<CurrentWeather/>
 					<TypeBtns/>
 					<div className={'charts'}>
-						<WeatherGraphic/>
+						<WeatherGraphic data={data}/>
 					</div>
-					<DaysBtns currData={currData} isMetric={isMetric}/>
+					<DaysBtns />
 				</div>
 				}
 			</div>

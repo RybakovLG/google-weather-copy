@@ -4,6 +4,7 @@ const currWeatherSlice = createSlice({
 			name: 'currWeather',
 			initialState: {
 				currData: {},
+				currLocation: {},
 				isMetric: true,
 				isAutoLocation: false,
 			},
@@ -12,26 +13,36 @@ const currWeatherSlice = createSlice({
 				setCurrData(state, action) {
 					const {data} = action.payload
 					const curr = data.current;
-					state.currData = getCurrWeatherObject(data, curr, curr.last_updated)
+
+					state.currLocation = {
+						country: data.location.country,
+						name: data.location.name,
+					}
+					state.currData = getCurrWeatherObject(curr, curr.last_updated)
 				},
 
 				setForecastData(state, action) {
 					const [time, data] = action.payload
+
 					if (state.currData.updTimeStamp === time) return
 
 					let fCast
-					data.forecast.forecastday.forEach((ar) => ar.hour.forEach((ar1) => {
-						if (new Date(ar1.time).getTime() === time) {
-							fCast = ar1;
+
+					main: for (const day of data.forecast.forecastday) {
+						for (const hour of day.hour) {
+							if (new Date(hour.time).getTime() === time) {
+								fCast = hour;
+								break main
+							}
 						}
-					}));
-					state.currData = getCurrWeatherObject(data, fCast, fCast.time)
+					}
+					state.currData = getCurrWeatherObject(fCast, fCast.time)
 				},
 
 				setCurrDayData(state, action) {
-					const [time, currDay, data] = action.payload
+					const [time, currDay] = action.payload
 					if (state.currData.updTimeStamp === time) return
-					state.currData = getCurrWeatherObject(data, currDay, time, true)
+					state.currData = getCurrWeatherObject(currDay, time, true)
 				},
 
 				setMetric(state, action) {
@@ -41,16 +52,19 @@ const currWeatherSlice = createSlice({
 				setAutoLocation(state, action) {
 					state.isAutoLocation = action.payload
 				},
-			}
+			},
 		}
 )
 
-function getCurrWeatherObject(data, curr, last_updated, isDay = false) {
+function getCurrWeatherObject(curr, last_updated, isDay = false) {
 
 	const formatOptions = {
 		weekday: 'long',
-		hour: isDay ? undefined : 'numeric',
-		minute: isDay ? undefined : 'numeric'
+	}
+
+	if (!isDay) {
+		formatOptions.hour = 'numeric'
+		formatOptions.minute = 'numeric'
 	}
 
 	return {
@@ -61,8 +75,6 @@ function getCurrWeatherObject(data, curr, last_updated, isDay = false) {
 		humidity: isDay ? curr.avghumidity : curr.humidity,
 		wind_kph: Math.round(isDay ? curr.maxwind_kph : curr.wind_kph),
 		wind_mph: Math.round(isDay ? curr.maxwind_mph : curr.wind_mph),
-		country: data.location.country,
-		name: data.location.name,
 		text: curr.condition.text,
 		updTime: new Intl.DateTimeFormat('ru-RU', formatOptions)
 				.format(new Date(last_updated)),

@@ -1,25 +1,28 @@
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {setForecastData} from "../store/currWeatherSlice";
 
 const UseGraphics = () => {
 
 	const {data} = useSelector(state => state.data)
-	const {typeY} = useSelector(state => state.graphics)
+	const {typeY, slideGraphicsPx} = useSelector(state => state.graphics)
 
-	function getVisualY(datum) {
+	const dispatch = useDispatch()
+
+	function getVisualY (datum) {
 
 		function addPostfix() {
 			if (typeY.includes('temp')) return datum[typeY]
 
-			switch (typeY) {
-				default:
-					return datum[typeY]
-				case 'humidity':
-					return `${datum[typeY]}%`;
-				case 'wind_kph':
-					return `${datum[typeY]} км/ч`;
-				case 'wind_mph':
-					return `${datum[typeY]} ми/ч`;
-			}
+			const postfix =
+					typeY === 'humidity'
+							? '%'
+							: typeY === 'wind_kph'
+							? ' км/ч'
+							: typeY === 'wind_mph'
+									? ' ми/ч'
+									: ''
+
+			return datum[typeY] + `${postfix}`
 		}
 
 		let currHour = new Date(data.current.last_updated).getHours()
@@ -37,6 +40,11 @@ const UseGraphics = () => {
 				}
 			}
 		}
+	}
+
+	function clickHandler(e) {
+		if (!e.target.dataset.time) return
+		dispatch(setForecastData([+e.target.dataset.time, data]))
 	}
 
 	const chartsStyles = {
@@ -61,9 +69,18 @@ const UseGraphics = () => {
 				fill: `${typeY === 'humidity' ? '#1a73e8' : 'rgb(181, 181, 181)'}`,
 				cursor: 'pointer',
 			}
+		},
+		padding: {bottom: 20, top: 25, left: 0, right: 0},
+		domainPadding: {y: [15, 25]},
+		VictoryContainer: {
+			transform: `translateX(-${slideGraphicsPx}px)`,
+			transition: 'all 1000ms cubic-bezier(.51,-0.17,0,1)'
 		}
 	}
-	return {getVisualY, chartsStyles};
+
+	const onClick = {onClick: clickHandler}
+
+	return {getVisualY, chartsStyles, onClick};
 };
 
 export default UseGraphics;
