@@ -8,7 +8,7 @@ const UseGraphics = () => {
 
 	const dispatch = useDispatch()
 
-	function getVisualY (datum) {
+	function getVisualY(datum) {
 
 		function addPostfix() {
 			if (typeY.includes('temp')) return datum[typeY]
@@ -75,6 +75,13 @@ const UseGraphics = () => {
 		VictoryContainer: {
 			transform: `translateX(-${slideGraphicsPx}px)`,
 			transition: 'all 1000ms cubic-bezier(.51,-0.17,0,1)'
+		},
+		VictoryScatter: {
+			labels: {
+				fontFamily: 'Arial, sans-serif',
+				fontSize: 12, stroke: undefined
+
+			}
 		}
 	}
 

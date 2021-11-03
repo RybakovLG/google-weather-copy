@@ -12,13 +12,6 @@ const DaysBtns = () => {
 
 	function handlerClick(e, btnDay, isSameDay) {
 		if (isSameDay) return
-
-		const btn = e.target.closest('button')
-
-		btn.parentElement.querySelectorAll('button')
-				.forEach(b => b.classList.remove('active'))
-		btn.classList.add('active')
-
 		dispatch(setSlideGraphics(btnDay.date))
 		dispatch(setCurrDayData([btnDay.date, btnDay.day]))
 	}
@@ -51,7 +44,7 @@ const DaysBtns = () => {
 					<div>{weekDay}</div>
 					<img width={64} height={64} src={icon} alt={text}/>
 					<br/>
-					<span>  {`${isMetric ? maxtemp_c : maxtemp_f}`}&deg; </span>
+					<span> {`${isMetric ? maxtemp_c : maxtemp_f}`}&deg; </span>
 					<span className={'day-btn__f'}>{`${isMetric ? mintemp_c : mintemp_f}`}&deg;</span>
 				</button>
 		)

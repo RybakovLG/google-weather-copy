@@ -47,14 +47,12 @@ const CurrentWeather = () => {
 
 					<div className={classes.btns}>
 						<button
-								disabled={isMetric}
 								onClick={() => handlerClick(true)}
 								className={classes.btn + `${isMetric ? classes.active : ''}`}>
 							&deg;C
 						</button>
 						<span className={classes.vertLine}>|</span>
 						<button
-								disabled={!isMetric}
 								onClick={() => handlerClick(false)}
 								className={classes.btn + `${!isMetric ? classes.active : ''}`}>
 							&deg;F

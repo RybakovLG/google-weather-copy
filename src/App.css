@@ -68,7 +68,7 @@ button:active {
 }
 
 .day-btns {
-    margin-top: 10px;
+    margin-top: 5px;
     display: flex;
     gap: 1px;
     justify-content: center;

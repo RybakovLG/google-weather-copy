@@ -9,13 +9,8 @@ const TypeBtns = () => {
 
 	const dispatch = useDispatch()
 
-	function handleClick(type, e) {
+	function handleClick(type) {
 		if (typeY.includes(type)) return
-
-		e.target.parentElement.querySelectorAll('button')
-				.forEach(button => button.classList.remove('active'))
-
-		e.target.classList.add('active')
 
 		if (type === 'temp') {
 			dispatch(setType(`${isMetric ? 'temp_c' : 'temp_f'}`))
@@ -26,24 +21,29 @@ const TypeBtns = () => {
 			return
 		}
 		dispatch(setType(type))
-
+	}
+	
+	function isActive(type) {
+		return typeY.includes(type) ? 'active' : undefined
 	}
 
 	return (
 			<div className={'type-btns'}>
 				<button
-						className={'active'}
-						onClick={e => handleClick('temp', e)}>
+						className={isActive('temp')}
+						onClick={() => handleClick('temp')}>
 					Температура
 				</button>
 				<span className={'vert-line'}>|</span>
 				<button
-						onClick={e => handleClick('humidity', e)}>
+						className={isActive('humidity')}
+						onClick={() => handleClick('humidity')}>
 					Влажность
 				</button>
 				<span className={'vert-line'}>|</span>
 				<button
-						onClick={e => handleClick('wind', e)}>
+						className={isActive('wind')}
+						onClick={() => handleClick('wind')}>
 					Ветер
 				</button>
 			</div>

@@ -68,8 +68,8 @@ const graphSlice = createSlice({
 
 			if (currTime < lastUpdTime) currTime = lastUpdTime
 			const firstTime = state.dataXY[0].time
-			let res = (((currTime - firstTime) / 3600000) - 2.9) * 650 / 24
 
+			let res = (((currTime - firstTime) / 3600000) - 2.9) * 650 / 24
 			if (res > 1275) res = 1275
 			if (res < 0) res = 0
 
@@ -78,7 +78,6 @@ const graphSlice = createSlice({
 
 		getMinY(state) {
 			state.minY = state.dataXY.reduce((min, cur) => {
-
 				if (min >= cur[state.typeY]) min = (cur[state.typeY] - 1)
 
 				return min

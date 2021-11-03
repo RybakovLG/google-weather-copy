@@ -30,7 +30,7 @@ const WeatherGraphic = ({data}) => {
 	return (
 			<VictoryChart
 					width={1925}
-					height={125}
+					height={150}
 					padding={chartsStyles.padding}
 					domainPadding={chartsStyles.domainPadding}
 					containerComponent={
@@ -45,21 +45,16 @@ const WeatherGraphic = ({data}) => {
 						tickValues={tickValues}
 						tickFormat={(t) => `${new Date(t).getHours()}:00`}
 						style={chartsStyles.VictoryAxis}
-						tickLabelComponent={<LabelAxis y={123}/>}
+						tickLabelComponent={<LabelAxis y={140}/>}
 				/>
 				{typeY.includes('wind')
 						? <VictoryScatter
 								name='windChart'
 								data={dataXY}
 								x='time'
-								style={{
-									labels: {
-										fontFamily: 'Arial, sans-serif',
-										fontSize: 12, stroke: undefined
-									}
-								}}
+								style={chartsStyles.VictoryScatter}
 								labels={({datum}) => getVisualY(datum)}
-								dataComponent={<WindArrow dx={15}/>}
+								dataComponent={<WindArrow dx={17} y={60}/>}
 								labelComponent={
 									<VictoryLabel dx={15} y={35}/>}
 						/>

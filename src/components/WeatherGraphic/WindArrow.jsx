@@ -1,7 +1,7 @@
 import React from 'react';
 import {useSelector} from "react-redux";
 
-const WindArrow = ({x, dx, datum}) => {
+const WindArrow = ({x, y, dx, datum}) => {
 
 	const {tickValues} = useSelector(state => state.graphics)
 
@@ -14,7 +14,7 @@ const WindArrow = ({x, dx, datum}) => {
 
 	return (
 			<svg x={(x - (wind_kph + 5) / 2) + dx}
-					 y={53}>
+					 y={y}>
 				<svg
 						x="0px"
 						y="0px"
